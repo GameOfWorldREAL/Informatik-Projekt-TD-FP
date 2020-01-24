@@ -2,6 +2,7 @@ Necessary:
 Create Tag: Ground, Tower, Wall, Build
 Create Layer(important sequenz): (8)PostProcessing,(9)Player,(10)Tower,(11)Build
 
+Edit --> Project Setings --> Physics Layer Collision Matrix : Disable all Build and UI
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 PLAYER:
