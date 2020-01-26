@@ -1,11 +1,14 @@
-﻿using UnityEngine;
+﻿//Editited variant of unity asset SmoothMouseLook; Edited aigan
+using UnityEngine; 
 using System.Collections;
 using System.Collections.Generic;
-[AddComponentMenu("Camera-Control/Smooth Mouse Look")]
+using System.Threading;
+
+[AddComponentMenu("Camera-Control/Smooth Mouse Look")]              
 public class SmoothMouseLook : MonoBehaviour
 {
     public GameObject body;
-    public GameObject cmaPivot;
+    public GameObject camPivot;
 
     public float sensitivityX = 15F;
     public float sensitivityY = 15F;
@@ -21,6 +24,8 @@ public class SmoothMouseLook : MonoBehaviour
     float rotAverageY = 0F;
     public float frameCounter = 20;
     Quaternion originalRotation;
+
+    public Vector3 camPos;
 
 
 
@@ -90,12 +95,14 @@ public class SmoothMouseLook : MonoBehaviour
         Quaternion xQuaternion = Quaternion.AngleAxis(rotAverageX, Vector3.up);
 
         //Rotate
-        cmaPivot.transform.rotation = originalRotation * xQuaternion * yQuaternion;
+        camPivot.transform.rotation = originalRotation * xQuaternion * yQuaternion;
         body.transform.rotation = originalRotation * xQuaternion;
     }
 
     void Start()
     {
+        camPivot.transform.localPosition = camPos;
+
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb == true)
         {
@@ -120,5 +127,10 @@ public class SmoothMouseLook : MonoBehaviour
             }
         }
         return Mathf.Clamp(angle, min, max);
+    }
+
+    private void OnEnable()
+    {
+        camPivot.transform.localPosition = camPos;
     }
 }

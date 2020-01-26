@@ -26,8 +26,8 @@ public class placeAndUI : MonoBehaviour
     int oldChangeCount = 0;                 //test value
 
     GameObject towerObject;
-   
-    bool buildMode = false;                 //if B pressed change from false to true and contrawise
+    [HideInInspector]
+    public bool buildMode = false;          //if B pressed change from false to true and contrawise
     bool objectSelected = false;            //if true tower reference is same 
     float buildModeDelay;                   //Delay for controlled Mode change 
     bool setTower;                          //if Mouse0 ( Left ) is pressed seting is available
@@ -214,7 +214,7 @@ public class placeAndUI : MonoBehaviour
             changeCount += 1;
         }
 
-        if (Input.GetKey(KeyCode.B) == true && Time.time >= buildModeDelay)        //Key Delay added for controled mode change
+        if (Input.GetKey(KeyCode.B) == true && Time.time > buildModeDelay)        //Key Delay added for controled mode change
         {
             if (buildMode == false)                           
             {
@@ -238,5 +238,11 @@ public class placeAndUI : MonoBehaviour
         {
             setTower = false;
         }
+    }
+
+    private void OnDisable()
+    {
+        DestroyTower(towerObject);
+        buildMode = false;
     }
 }
