@@ -1,0 +1,51 @@
+Necessary:
+Create Tag: Ground, Tower, Wall, Build
+Create Layer(important sequenz): (8)PostProcessing,(9)Player,(10)Tower,(11)Build
+
+Edit --> Project Setings --> Physics Layer Collision Matrix : Disable all Build and UI
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+PLAYER:
+
+On player: placeAndUI, Capsule Collider with slide Material
+
+Cam: MainCamera
+
+Tower: Size 1-9 : Tower Prefab 
+
+Texture: Size 1-9 : Tower Texture
+
+Image: Ignore if filled else : in to scene : UI Prefab : fill Image RawImage 0-8
+
+True Material: Material (Green)
+
+False Material: Material (Red)
+
+Place Range: value max place Range of tower
+
+Layer: accept : Default,TransparentFX,Ignore Raycast,PostProcessing,Tower
+--------------------------------------------------------------------------------------------
+set Tag : Player
+
+set Layer : Player
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+
+TOWER(Prefab):
+
+On Tower: towerPlaceScript, BoxCollider : enable : isTrigger
+
+Layer:  accept : Default,TransparentFX,Ignore Raycast,PostProcessing,Water,Player,Tower
+--------------------------------------------------------------------------------------------
+set Tag : Tower
+
+set Layer : Tower
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+
+
+Remarks:
+
+Wall Gameobjects : Tag : Wall (if dont know this)
+Ground Gameobjects : Tag : Ground (only this tower place able)
+Water Gameobjects: Tag : Water
