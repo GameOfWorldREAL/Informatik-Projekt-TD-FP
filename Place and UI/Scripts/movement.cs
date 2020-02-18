@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Threading;
 
 
-public class movement : MonoBehaviour
+public class Movement : MonoBehaviour
 {
     public GameObject body;
     public GameObject pHPivot;
@@ -26,7 +26,8 @@ public class movement : MonoBehaviour
     public float jumpForce = 100;
     [Tooltip("In Percent")]
     public float senseOnJump = 25;
-    private bool isGrounded = true;
+    [HideInInspector]
+    public bool isGrounded = true;
     private float playerHeight = 0;
 
     private bool wPressed = false;
@@ -43,23 +44,13 @@ public class movement : MonoBehaviour
     public bool sAllowed = true;
     public bool dAllowed = true;
     public bool aAllowed = true;
-    public bool spaceAllowed = true;
     private bool rAllowed = true;
-
+    public bool spaceAllowed = true;
     private bool isJumping = false;
-    private bool isFalling = false;
 
     private float g;
-
-    private Vector3 cOldV3 = new Vector3(0, 0, 0);
-    private Vector3 bOldV3 = new Vector3(0, 0, 0);
-    private Vector3 kOldV3 = new Vector3(0, 0, 0);
-
     Rigidbody rb;
-
-
     Thread t1;
-
     private bool threadFrameCounter = false;
 
     void Thread1Method()
@@ -73,7 +64,6 @@ public class movement : MonoBehaviour
                 SideDirectionX();
                 threadFrameCounter = false;
             }
-
         }
     }
 
@@ -128,7 +118,7 @@ public class movement : MonoBehaviour
 
         if (dAllowed == true && Input.GetKey(KeyCode.D) && aPressed == false)     //abfrage ob die Taste gedrueckt ist um fehler zu vermeiden andere nicht
         {
-            dPressed = true;                     //setze auf gedrueckt
+            dPressed = true;                      //setze auf gedrueckt
             richtung2 = true;                     //setze auf vorwaerts
         }
         else
@@ -176,7 +166,7 @@ public class movement : MonoBehaviour
             {
                 if (actuellSpeedZ < moveSpeedForwRun)            //moveSpeed als Maximalwert
                 {
-                    actuellSpeedZ += accelForw / 10;       //Neuer Beschleunigungswert "/10" damit es angenehmere werte gibt
+                    actuellSpeedZ += accelForw / 10;             //Neuer Beschleunigungswert "/10" damit es angenehmere werte gibt
                 }
 
                 else if (actuellSpeedZ > moveSpeedForwRun)       //Maximalwert moveSpeed soll nicht ueberschritten werden
@@ -186,18 +176,17 @@ public class movement : MonoBehaviour
             }
             else if (isJumping == false)
             {
-                if (actuellSpeedZ < moveSpeedForw)            //moveSpeed als Maximalwert
+                if (actuellSpeedZ < moveSpeedForw)               //moveSpeed als Maximalwert
                 {
 
                     actuellSpeedZ += accelForw / 10;
 
                 }
-                else if (actuellSpeedZ > moveSpeedForw)       //Maximalwert moveSpeed soll nicht ueberschritten werden
+                else if (actuellSpeedZ > moveSpeedForw)          //Maximalwert moveSpeed soll nicht ueberschritten werden
                 {
-                    actuellSpeedZ = moveSpeedForw;            //Annahme des Maximalwerts bei ueberschreiten
+                    actuellSpeedZ = moveSpeedForw;               //Annahme des Maximalwerts bei ueberschreiten
                 }
             }
-
         }
 
         //RUECKWAERTS
@@ -227,9 +216,9 @@ public class movement : MonoBehaviour
         if (dPressed == true)
         {
             // wenn die Taste gedrueckt wird :
-            if (actuellSpeedX < moveSpeedSide)            //moveSpeed als Maximalwert
+            if (actuellSpeedX < moveSpeedSide)             //moveSpeed als Maximalwert
             {
-                actuellSpeedX += accelSide / 10;       //Neuer Beschleunigungswert "/10" damit es angenehmere werte gibt
+                actuellSpeedX += accelSide / 10;          //Neuer Beschleunigungswert "/10" damit es angenehmere werte gibt
             }
 
             else if (actuellSpeedX > moveSpeedSide)       //Maximalwert moveSpeed soll nicht ueberschritten werden
@@ -260,18 +249,16 @@ public class movement : MonoBehaviour
     void Break()
     {
         //"VORWAERTS" BREMSEN
-        //Sicherheitsmassnahme für den fall einer negativen Beschleunigung nach vorme (rueckwaerts fahren obwohl es stoppen sollte) 
-        //und um zu vermeiden dass gleichzeitig zum Bremsen (nichts Druecken) eine Beschleunigung nach hinten stattfindet (S druecken)
-        //hier geht man von einem positiven actuellSpeed aus da richtung TRUE ist
+        //Bremmsverhalten bei bewegungsrictung nach vorne
         if (wPressed == false && sPressed == false && richtung1 == true && isJumping == false)
         {
-            if (actuellSpeedZ > 0)             //actuellSpeed soll zum bremsen auf 0 gebracht werden
+            if (actuellSpeedZ > 0)             //actuellSpeedZ soll zum bremsen auf 0 gebracht werden
             {
                 actuellSpeedZ -= accelBack / 10;
 
             }
 
-            else if (actuellSpeedZ < 0)        //actuellSpeed darf nicht kleiner als 0 sein da sich sonst das Objekt Rueckwaerts bewegt
+            else if (actuellSpeedZ < 0)        //actuellSpeedZ darf nicht kleiner als 0 sein da sich sonst das Objekt Rueckwaerts bewegt
             {
                 actuellSpeedZ = 0;           //Annahme des Wertes 0
             }
@@ -283,9 +270,7 @@ public class movement : MonoBehaviour
         }
 
         //"RUECKWAERTS" BREMSEN
-        //Sicherheitsmassnahme für den fall einer positiven Beschleunigung nach hinten (vorwaerts fahren obwohl es stoppen sollte) 
-        //und um zu vermeiden dass gleichzeitig zum Bremsen (nichts Druecken) eine Beschleunigung nach vorne stattfindet (W druecken) 
-        //hier geht man von einem negativen actuellSpeed aus da richtung FALSE ist
+        //Bremmsverhalten bei bewegungsrictung nach hinten
         if (sPressed == false && wPressed == false && richtung1 == false)
         {
             if (actuellSpeedZ < 0)             //actuellSpeed soll zum bremsen auf 0 gebracht werden
@@ -298,16 +283,16 @@ public class movement : MonoBehaviour
             }
         }
 
-        //Identisch in X Richtuing
+        //Identisch: in X Richtuing
         //"RECHTS" BREMSEN
         if (dPressed == false && aPressed == false && richtung2 == true)
         {
-            if (actuellSpeedX > 0)             //actuellSpeed soll zum bremsen auf 0 gebracht werden
+            if (actuellSpeedX > 0)             //actuellSpeedX soll zum bremsen auf 0 gebracht werden
             {
                 actuellSpeedX -= accelSide / 10;  //verringert die geschwindigkeit
             }
 
-            else if (actuellSpeedX < 0)        //actuellSpeed darf nicht kleiner als 0 sein da sich sonst das Objekt Rueckwaerts bewegt
+            else if (actuellSpeedX < 0)        //actuellSpeedX darf nicht kleiner als 0 sein da sich sonst das Objekt Rueckwaerts bewegt
             {
                 actuellSpeedX = 0;           //Annahme des Wertes 0
             }
@@ -316,11 +301,11 @@ public class movement : MonoBehaviour
         //"LINKS" BREMSEN
         if (aPressed == false && dPressed == false && richtung2 == false)
         {
-            if (actuellSpeedX < 0)             //actuellSpeed soll zum bremsen auf 0 gebracht werden
+            if (actuellSpeedX < 0)             //actuellSpeedX soll zum bremsen auf 0 gebracht werden
             {
                 actuellSpeedX += accelSide / 10;  //verringert die geschwindigkeit
             }
-            else if (actuellSpeedX > 0)        //aktuellSpeed darf nicht groesser als 0 sein da sich sonst das Objekt vorwaerts bewegt
+            else if (actuellSpeedX > 0)        //aktuellSpeedX darf nicht groesser als 0 sein da sich sonst das Objekt vorwaerts bewegt
             {
                 actuellSpeedX = 0;             //Annahme des Wertes 0
             }
@@ -330,29 +315,18 @@ public class movement : MonoBehaviour
 
     void Jumping()
     {
-        if (spacePressed == true && isGrounded == true && isJumping == false)
+        if (spacePressed == true && isGrounded == true && isJumping == false)   //Sprungbedingungen
         {
-            body.GetComponent<Rigidbody>().AddForce(body.transform.up * jumpForce, ForceMode.Impulse);
+            body.GetComponent<Rigidbody>().AddForce(body.transform.up * jumpForce, ForceMode.Impulse);  //gibt dem spieler einen Impuls
 
-            isJumping = true;
-            wAllowed = false;
-            aAllowed = false;
-            sAllowed = false;
-            dAllowed = false;
-            spaceAllowed = false;
+            isJumping = true;              //keine reaktion auf tasteneingaben
 
-            camLook.sensitivityX = camSensX * senseOnJump / 100;
+            camLook.sensitivityX = camSensX * senseOnJump / 100;    //Kamera sensivität wird reduziert
             camLook.sensitivityY = camSensY * senseOnJump / 100;
         }
 
-        else if (isGrounded == true && isJumping == true)
+        else if (isGrounded == true && isJumping == true)   //wenn der spieler auf dem Boden ist
         {
-            wAllowed = true;
-            aAllowed = true;
-            sAllowed = true;
-            dAllowed = true;
-            spaceAllowed = true;
-
             isJumping = false;
 
             camLook.sensitivityX = camSensX;
@@ -364,23 +338,36 @@ public class movement : MonoBehaviour
 
     void HeightDetector()
     {
-        if (Physics.Raycast(pHPivot.transform.position, -transform.up, out RaycastHit hit, 100))
+        if (Physics.Raycast(pHPivot.transform.position, -transform.up, out RaycastHit hit, 100))  //Schießt einen Strahl nach unten
         {
-            playerHeight = Vector3.Distance(hit.point, pHPivot.transform.position);
+            playerHeight = Vector3.Distance(hit.point, pHPivot.transform.position);   //Distanz zum Boden
 
-            if (playerHeight > 0.05)
+            if (playerHeight > 0.01)  //Testbedingun für Boden
             {
                 isGrounded = false;
+
+                wAllowed = false;       //deaktiviert die Eingaben
+                aAllowed = false;
+                sAllowed = false;
+                dAllowed = false;
+                spaceAllowed = false;
             }
             else
             {
                 isGrounded = true;
-            }
 
-            if (isFalling == true)
-            {
-                playerHeight += -0.83f;
+                wAllowed = true;        //aktiviert die Eingaben
+                aAllowed = true;
+                sAllowed = true;
+                dAllowed = true;
+                spaceAllowed = true;
             }
         }
     }
+    private void OnEnable()     //Bei Einschalten
+    {
+        actuellSpeedX = 0;
+        actuellSpeedZ = 0;
+    }
+
 }
