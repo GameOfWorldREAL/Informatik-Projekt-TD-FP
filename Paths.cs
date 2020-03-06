@@ -5,14 +5,14 @@ using System.Threading;
 
 public class Paths : MonoBehaviour
 {
-    public int aw;
+    public int aw;          //Wellenazahl
 
-    public int wen;
+    public int wen;         //Gegneranzahlen
     public int xen;
     public int yen;
     public int zen;
 
-    public int wplus;
+    public int wplus;       //Anzahl der Erhöhung der Generzahlen
     public int xplus;
     public int yplus;
     public int zplus;
@@ -28,7 +28,6 @@ public class Paths : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      // timeTime.SECONDS.sleep(1);  //Wartezeit?
 
     }
 
@@ -40,35 +39,39 @@ public class Paths : MonoBehaviour
 
     }
 
-    public void Run()
+    public void Run()       //Erzeugung der Gegner
     {
         for (int i = 0; i == wen; i++){
-            Enemy ew = new Enemy();
+          // GameObject ew = new GameObject();
+            GameObject ew = gameObject.Tag("Enemy");
+            ew.gameObject.GetComponent<EnemyMoveScript>().moveTo = next;
         }
         for (int j = 0; j == xen; j++){
-            Enemy ex = new Enemy();
+          // GameObject ex = new GameObject();
+            GameObject ex = gameObject.Tag("Enemy");
+            ex.gameObject.GetComponent<EnemyMoveScript>().moveTo = next;
         }
         for (int k = 0; k == yen; k++){
-            Enemy ey = new Enemy();
+          //  GameObject ey = new GameObject();
+            GameObject ey = gameObject.Tag("Enemy");
+            ey.gameObject.GetComponent<EnemyMoveScript>().moveTo = next;
         }
         for (int h = 0; h == zen; h++){
-            Enemy ez = new Enemy();
+          //  GameObject ez = new GameObject();
+            GameObject ez = gameObject.Tag("Enemy");
+            ez.gameObject.GetComponent<EnemyMoveScript>().moveTo = next;
         }
+        SetEnemyNumber();
     }
      
-    public void Beginn()
+    public void Beginn()        //Thread für Welle
     {
         Thread waveThread;
         waveThread = new Thread (Run);
         waveThread.Start();
     }
 
-            // void Path() {
-            //nextPoint
-
-            // }
-
-    void SetAmountWave(int aw) {
+    void SetAmountWave(int aw) {        //die Wellen werden mehrfach durchgeführt
 
         for (int l = 1; l == aw; l++)
         {
@@ -87,7 +90,7 @@ public class Paths : MonoBehaviour
         yen = yen + yplus;
         zen = zen + zplus;
     }
-    public void CountWaves (){
+    public void CountWaves (){      //Thread lässt Wellen mehrfach ablaufen
         Thread waveAmountThread;
         waveAmountThread = new Thread(SetAmountWave(int aw));
         waveAmountThread.Start();
