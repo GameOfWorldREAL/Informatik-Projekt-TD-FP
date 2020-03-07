@@ -10,9 +10,9 @@ public class EnemyMoveScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(moveTo.transform.position);
+        transform.LookAt(moveTo.transform.position);        
         transform.rotation = Quaternion.Euler(0,transform.rotation.eulerAngles.y,0);
         
-        GetComponent<Rigidbody>().velocity = transform.forward * speed;
+        GetComponent<Rigidbody>().velocity = transform.forward * speed;     //Richtung und Geschwingigkeit werden festgelegt
     }
 }

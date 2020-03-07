@@ -11,8 +11,8 @@ public class PointScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, lm, QueryTriggerInteraction.UseGlobal);
-        for (int i = 0; i < hitColliders.Length; i++)
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, lm, QueryTriggerInteraction.UseGlobal);     //die Punkte werden weitergegeben, wenn
+        for (int i = 0; i < hitColliders.Length; i++)                                                                           //ein Gegner sich in der Sphäre befindet
         {
             if (hitColliders[i].gameObject.tag == "Enemy")
             {
