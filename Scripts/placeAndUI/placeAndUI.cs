@@ -232,7 +232,7 @@ public class placeAndUI : MonoBehaviour
             changeCount += 1;
         }
 
-        if (Input.GetKey(KeyCode.B) == true && Time.time > buildModeDelay)        //Key Delay added for controled mode change
+        if (Input.GetKey(KeyCode.Mouse1) == true && Time.time > buildModeDelay)        //Key Delay added for controled mode change
         {
             if (buildMode == false)                           
             {
